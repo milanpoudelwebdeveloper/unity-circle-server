@@ -1,0 +1,19 @@
+{
+  "name": "unitycircle",
+  "version": "1.0.0",
+  "description": "A social media platform",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "react"
+  ],
+  "author": "Milan Poudel",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
