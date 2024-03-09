@@ -15,6 +15,10 @@ import HTTP_STATUS from "http-status-codes";
 import compression from "compression";
 import "express-async-errors";
 import { config } from "./config";
+import { Server } from "socket.io";
+import { createAdapter } from "@socket.io/redis-adapter";
+import { createClient } from "redis";
+import applicationRoutes from "./routes";
 
 const SERVER_PORT = 5000;
 
@@ -44,6 +48,19 @@ export const setUpServer = (app: Application) => {
     })
   );
   app.use(urlencoded({ extended: true }));
+  applicationRoutes(app);
+  const io = new Server(http.createServer(app), {
+    cors: {
+      origin: config.clientUrl,
+      methods: ["GET", "POST", "PUT", "DELETE"],
+    },
+  });
+  const pubClient = createClient({
+    url: config.redisHost,
+  });
+  const subClient = pubClient.duplicate();
+  io.adapter(createAdapter(pubClient, subClient));
+  io.listen(3000);
   app.listen(SERVER_PORT, () => {
     console.log(`Server is running on port ${SERVER_PORT}`);
   });

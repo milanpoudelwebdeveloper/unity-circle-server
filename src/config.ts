@@ -7,4 +7,5 @@ export const config = {
   secretKeyOne: process.env.SECRET_KEY_ONE,
   secretKeyTwo: process.env.SECRET_KEY_ONE,
   clientUrl: process.env.CLIENT_URL,
+  redisHost: process.env.REDIS_HOST,
 };
