@@ -19,6 +19,10 @@ import { Server } from "socket.io";
 import { createAdapter } from "@socket.io/redis-adapter";
 import { createClient } from "redis";
 import applicationRoutes from "./routes";
+import {
+  CustomError,
+  IErrorResponse,
+} from "./shared/globals/helpers/error-handler";
 
 const SERVER_PORT = 5000;
 
@@ -61,6 +65,19 @@ export const setUpServer = (app: Application) => {
   const subClient = pubClient.duplicate();
   io.adapter(createAdapter(pubClient, subClient));
   io.listen(3000);
+  app.all("*", (req: Request, res: Response) => {
+    res.status(HTTP_STATUS.NOT_FOUND).json({
+      message: `${req.originalUrl} not found`,
+    });
+  });
+  app.use(
+    (err: IErrorResponse, req: Request, res: Response, next: NextFunction) => {
+      if (err instanceof CustomError) {
+        return res.status(err.statusCode).json(err.serializeErrors());
+      }
+      next();
+    }
+  );
   app.listen(SERVER_PORT, () => {
     console.log(`Server is running on port ${SERVER_PORT}`);
   });
