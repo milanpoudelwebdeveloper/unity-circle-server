@@ -23,8 +23,11 @@ import {
   CustomError,
   IErrorResponse,
 } from "./shared/globals/helpers/error-handler";
+import bunyan from "bunyan";
 
 const SERVER_PORT = 5000;
+
+const logger = bunyan.createLogger({ name: "app" });
 
 export const setUpServer = (app: Application) => {
   app.use(
@@ -72,6 +75,7 @@ export const setUpServer = (app: Application) => {
   });
   app.use(
     (err: IErrorResponse, req: Request, res: Response, next: NextFunction) => {
+      logger.error(err);
       if (err instanceof CustomError) {
         return res.status(err.statusCode).json(err.serializeErrors());
       }
@@ -79,6 +83,6 @@ export const setUpServer = (app: Application) => {
     }
   );
   app.listen(SERVER_PORT, () => {
-    console.log(`Server is running on port ${SERVER_PORT}`);
+    logger.info(`Server is running on port ${SERVER_PORT}`);
   });
 };
