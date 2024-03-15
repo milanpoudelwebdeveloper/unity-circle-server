@@ -8,7 +8,8 @@
     "lint:check": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "prettier:check": "prettier --check 'src/**/*.{ts,json}'",
-    "prettier:fix": "prettier --write 'src/**/*.{ts,json}'"
+    "prettier:fix": "prettier --write 'src/**/*.{ts,json}'",
+    "build": "tsc && tsc-alias"
   },
   "keywords": [
     "node",
@@ -49,6 +50,7 @@
     "pg": "^8.11.3",
     "redis": "^4.6.13",
     "socket.io": "^4.7.4",
+    "tsc-alias": "^1.8.8",
     "typescript-transform-paths": "^3.4.7"
   }
 }
